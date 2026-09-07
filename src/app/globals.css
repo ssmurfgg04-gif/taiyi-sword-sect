@@ -6,8 +6,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-dm-sans);
+  --font-mono: var(--font-space-mono);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -41,6 +41,27 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+  /* ── Wuxia design tokens ─────────────────────────────── */
+  --font-display: var(--font-fraunces);
+  --font-brush: var(--font-ma-shan-zheng);
+  --font-serifcn: var(--font-noto-serif-sc);
+  --font-hand: var(--font-caveat);
+
+  --color-paper: #f1e9d7;
+  --color-paper-bright: #fbf6ea;
+  --color-paper-deep: #e7dcc2;
+  --color-paper-mid: #ede3cc;
+  --color-ink: #1d1a15;
+  --color-ink-soft: #5c5545;
+  --color-ink-faint: #8a8271;
+  --color-seal: #b5382a;
+  --color-seal-deep: #8e2b20;
+  --color-jade: #2f5d46;
+  --color-jade-deep: #1e3d2d;
+  --color-gold: #c0922f;
+  --color-night: #171310;
+  --color-night-soft: #241d15;
 }
 
 :root {
@@ -76,6 +97,9 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  --grid-line: rgba(29, 26, 21, 0.055);
+  --grid-night: rgba(241, 233, 215, 0.045);
 }
 
 .dark {
@@ -116,7 +140,321 @@
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
+  html {
+    scroll-behavior: smooth;
   }
+  body {
+    @apply bg-paper text-ink font-sans antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: var(--color-seal);
+    color: var(--color-paper-bright);
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-paper);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--color-ink) 28%, transparent);
+    border-radius: 8px;
+    border: 2px solid var(--color-paper);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: color-mix(in srgb, var(--color-seal) 70%, transparent);
+  }
+  :focus-visible {
+    outline: 2px dashed var(--color-seal);
+    outline-offset: 3px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* ── Textures ──────────────────────────────────────────── */
+.paper-grid {
+  background-image: linear-gradient(
+      to right,
+      var(--grid-line) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+.night-grid {
+  background-image: linear-gradient(
+      to right,
+      var(--grid-night) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, var(--grid-night) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 300px 300px;
+}
+
+/* ── Shadows (illoca-style hard offset) ────────────────── */
+.shadow-hard-sm {
+  box-shadow: 3px 3px 0 0 rgba(29, 26, 21, 0.14);
+}
+.shadow-hard {
+  box-shadow: 6px 6px 0 0 rgba(29, 26, 21, 0.13);
+}
+.shadow-hard-lg {
+  box-shadow: 10px 10px 0 0 rgba(29, 26, 21, 0.14);
+}
+
+/* ── Dotted underline (illoca signature) ───────────────── */
+.dot-underline {
+  background-image: radial-gradient(
+    circle,
+    currentColor 0.9px,
+    transparent 1.1px
+  );
+  background-size: 5px 3px;
+  background-repeat: repeat-x;
+  background-position: 0 100%;
+  padding-bottom: 4px;
+}
+.dot-underline-seal {
+  background-image: radial-gradient(
+    circle,
+    var(--color-seal) 1.1px,
+    transparent 1.3px
+  );
+  background-size: 6px 4px;
+  background-repeat: repeat-x;
+  background-position: 0 100%;
+  padding-bottom: 5px;
+}
+/* dotted underline revealed on hover (nav links) */
+.hover-dots {
+  background-image: none;
+  padding-bottom: 4px;
+  transition: color 0.2s;
+}
+.hover-dots:hover {
+  background-image: radial-gradient(
+    circle,
+    var(--color-seal) 0.9px,
+    transparent 1.1px
+  );
+  background-size: 5px 3px;
+  background-repeat: repeat-x;
+  background-position: 0 100%;
+}
+
+/* ── Buttons ───────────────────────────────────────────── */
+.btn-seal {
+  @apply inline-flex items-center gap-2 rounded-md bg-seal text-paper-bright font-semibold;
+  padding: 0.72rem 1.35rem;
+  box-shadow: 4px 4px 0 0 rgba(29, 26, 21, 0.18);
+  transition:
+    transform 0.18s cubic-bezier(0.2, 0, 0, 1),
+    box-shadow 0.18s cubic-bezier(0.2, 0, 0, 1),
+    background-color 0.18s;
+}
+.btn-seal:hover {
+  background: var(--color-seal-deep);
+  transform: translate(-2px, -2px);
+  box-shadow: 7px 7px 0 0 rgba(29, 26, 21, 0.2);
+}
+.btn-seal:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0 0 0 0 rgba(29, 26, 21, 0.2);
+}
+.btn-ghost {
+  @apply inline-flex items-center gap-2 rounded-md border border-ink/25 bg-paper-bright text-ink font-semibold;
+  padding: 0.72rem 1.35rem;
+  box-shadow: 3px 3px 0 0 rgba(29, 26, 21, 0.1);
+  transition:
+    transform 0.18s cubic-bezier(0.2, 0, 0, 1),
+    box-shadow 0.18s cubic-bezier(0.2, 0, 0, 1),
+    border-color 0.18s;
+}
+.btn-ghost:hover {
+  border-color: var(--color-ink);
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 0 rgba(29, 26, 21, 0.12);
+}
+.btn-ghost:active {
+  transform: translate(1px, 1px);
+  box-shadow: 0 0 0 0 rgba(29, 26, 21, 0.12);
+}
+
+/* ── Inputs (dashed underline, illoca style) ───────────── */
+.input-dashed {
+  @apply w-full bg-transparent font-mono text-[15px] text-ink placeholder:text-ink-faint;
+  border: 0;
+  border-bottom: 1.5px dashed color-mix(in srgb, var(--color-ink) 35%, transparent);
+  padding: 0.65rem 0.15rem;
+  border-radius: 0;
+  transition: border-color 0.2s;
+}
+.input-dashed:focus {
+  outline: none;
+  border-bottom-color: var(--color-seal);
+  border-bottom-style: solid;
+}
+
+/* ── Marquee ───────────────────────────────────────────── */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  animation: marquee 38s linear infinite;
+  will-change: transform;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* ── Hero char overflow masks ──────────────────────────── */
+.char-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+.char {
+  display: inline-block;
+  will-change: transform;
+}
+
+/* ── Seal stamp ────────────────────────────────────────── */
+.seal-stamp {
+  background: var(--color-seal);
+  color: var(--color-paper-bright);
+  box-shadow: 4px 5px 0 0 rgba(29, 26, 21, 0.18);
+  border: 1.5px solid var(--color-paper-bright);
+  outline: 2.5px solid var(--color-seal);
+  outline-offset: -5.5px;
+}
+
+/* ── Custom cursor ─────────────────────────────────────── */
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 95;
+  border-radius: 9999px;
+}
+.cursor-dot {
+  width: 7px;
+  height: 7px;
+  background: var(--color-seal);
+}
+.cursor-ring {
+  width: 34px;
+  height: 34px;
+  border: 1.5px solid rgba(29, 26, 21, 0.35);
+  transition: width 0.25s, height 0.25s, border-color 0.25s;
+}
+@media (pointer: coarse) {
+  .cursor-dot,
+  .cursor-ring {
+    display: none;
+  }
+}
+
+/* ── Realms timeline ───────────────────────────────────── */
+.realm-row {
+  transition: background-color 0.35s;
+}
+.realm-row:hover {
+  background: rgba(29, 26, 21, 0.025);
+}
+.realm-marker {
+  transform: rotate(45deg);
+  transition:
+    background-color 0.3s,
+    border-color 0.3s,
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.realm-row.is-active .realm-marker {
+  background: var(--color-seal);
+  border-color: var(--color-seal);
+  transform: rotate(45deg) scale(1.3);
+}
+
+/* ── Technique cards ───────────────────────────────────── */
+.tech-card {
+  transition:
+    transform 0.25s cubic-bezier(0.2, 0, 0, 1),
+    box-shadow 0.25s cubic-bezier(0.2, 0, 0, 1);
+}
+.tech-card:hover {
+  transform: translate(-4px, -4px);
+  box-shadow: 10px 10px 0 0 rgba(29, 26, 21, 0.15);
+}
+
+/* ── Master cards ──────────────────────────────────────── */
+.master-card {
+  transition:
+    transform 0.3s cubic-bezier(0.2, 0, 0, 1),
+    box-shadow 0.3s cubic-bezier(0.2, 0, 0, 1),
+    background-color 0.3s;
+}
+.master-card:hover {
+  transform: translate(-4px, -4px);
+  box-shadow: 12px 12px 0 0 rgba(29, 26, 21, 0.22);
+}
+.master-card:hover .master-glyph {
+  transform: rotate(-8deg) scale(1.08);
+  color: var(--color-seal);
+}
+.master-card:hover .master-ring {
+  transform: rotate(30deg);
+}
+.master-glyph {
+  transition:
+    transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+    color 0.35s;
+}
+.master-ring {
+  transition: transform 0.8s cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* ── Footer wordmark chars ─────────────────────────────── */
+.foot-char {
+  display: inline-block;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.4s;
+}
+.foot-char:hover {
+  transform: translateY(-14px);
+  color: var(--color-seal);
+}
+
+/* ── Misc ──────────────────────────────────────────────── */
+.text-outline {
+  -webkit-text-stroke: 1.5px var(--color-ink);
+  color: transparent;
+}
+.vertical-rl {
+  writing-mode: vertical-rl;
 }

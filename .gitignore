@@ -52,3 +52,16 @@ prompt
 server.log
 # Skills directory
 /skills/
+# internal work artifacts
+/research/
+/review/
+/illoca_reference.html
+/dev.log
+/worklog.md
+/upload/
+/download/
+/skills/
+/examples/
+/mini-services/
+/tests/
+/agent-ctx/
